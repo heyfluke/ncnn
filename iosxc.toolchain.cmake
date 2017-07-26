@@ -11,12 +11,41 @@ set (IOS True)
 # suppress -rdynamic
 # set(CMAKE_SYSTEM_NAME Generic)
 
-set(CMAKE_C_COMPILER arm-apple-darwin11-clang)
-set(CMAKE_CXX_COMPILER arm-apple-darwin11-clang++)
+# set(CMAKE_C_COMPILER execute_process(COMMAND xcrun -sdk iphoneos -find clang))
+# set(CMAKE_CXX_COMPILER execute_process(COMMAND xcrun -sdk iphoneos -find clang++))
+IF(NOT CMAKE_C_COMPILER)
+  execute_process(COMMAND xcrun -sdk iphoneos -find clang
+   OUTPUT_VARIABLE CMAKE_C_COMPILER
+   ERROR_QUIET
+   OUTPUT_STRIP_TRAILING_WHITESPACE)
+  message(STATUS "Using c compiler ${CMAKE_C_COMPILER}")
+ENDIF()
+IF(NOT CMAKE_CXX_COMPILER)
+  execute_process(COMMAND xcrun -sdk iphoneos -find clang++
+   OUTPUT_VARIABLE CMAKE_CXX_COMPILER
+   ERROR_QUIET
+   OUTPUT_STRIP_TRAILING_WHITESPACE)
+  message(STATUS "Using c++ compiler ${CMAKE_CXX_COMPILER}")
+ENDIF()
+
+# FIXME: not work. workaround: set CMAKE_AR in build command line.
+# IF(NOT CMAKE_AR)
+#   execute_process(COMMAND xcrun -sdk iphoneos -find ar
+#    OUTPUT_VARIABLE CMAKE_AR
+#    ERROR_QUIET
+#    OUTPUT_STRIP_TRAILING_WHITESPACE)
+#   message(STATUS "Using ar ${CMAKE_AR}")
+# ENDIF()
 
 set(_CMAKE_TOOLCHAIN_PREFIX arm-apple-darwin11-)
 
-set(CMAKE_IOS_SDK_ROOT "/home/nihui/osd/cctools-port/usage_examples/ios_toolchain/target/SDK/")
+IF(NOT CMAKE_IOS_SDK_ROOT)
+  execute_process(COMMAND xcrun --show-sdk-path --sdk iphoneos
+   OUTPUT_VARIABLE CMAKE_IOS_SDK_ROOT
+   ERROR_QUIET
+   OUTPUT_STRIP_TRAILING_WHITESPACE)
+  message(STATUS "Using xcode root ${CMAKE_IOS_SDK_ROOT}")
+ENDIF()
 
 # Set the sysroot default to the most recent SDK
 set(CMAKE_OSX_SYSROOT ${CMAKE_IOS_SDK_ROOT} CACHE PATH "Sysroot used for iOS support")

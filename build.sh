@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 ##### android armv7
 mkdir -p build-android-armv7
@@ -19,7 +19,7 @@ popd
 ##### ios armv7 arm64
 mkdir -p build-ios
 pushd build-ios
-cmake -DCMAKE_TOOLCHAIN_FILE=../iosxc.toolchain.cmake ..
+cmake -DCMAKE_TOOLCHAIN_FILE=../iosxc.toolchain.cmake -DCMAKE_AR=`xcrun -sdk iphoneos -find ar` ..
 make
 make install
 popd
@@ -27,7 +27,7 @@ popd
 ##### ios simulator i386 x86_64
 mkdir -p build-ios-sim
 pushd build-ios-sim
-cmake -DCMAKE_TOOLCHAIN_FILE=../iossimxc.toolchain.cmake ..
+cmake -DCMAKE_TOOLCHAIN_FILE=../iossimxc.toolchain.cmake -DCMAKE_AR=`xcrun -sdk iphonesimulator -find ar` ..
 make
 make install
 popd
