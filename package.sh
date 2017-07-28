@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 NAME=ncnn
 
@@ -24,8 +24,13 @@ ln -s A $IOSPKGNAME/Versions/Current
 ln -s Versions/Current/Headers $IOSPKGNAME/Headers
 ln -s Versions/Current/Resources $IOSPKGNAME/Resources
 ln -s Versions/Current/${NAME} $IOSPKGNAME/${NAME}
+lipo -extract armv7 build-ios/install/lib/lib${NAME}.a -o build-ios/install/lib/lib${NAME}_armv7.a
+lipo -extract armv7s build-ios/install/lib/lib${NAME}.a -o build-ios/install/lib/lib${NAME}_armv7s.a
+lipo -extract arm64 build-ios/install/lib/lib${NAME}.a -o build-ios/install/lib/lib${NAME}_arm64.a
 lipo -create \
-    build-ios/install/lib/lib${NAME}.a \
+    build-ios/install/lib/lib${NAME}_armv7.a \
+    build-ios/install/lib/lib${NAME}_armv7s.a \
+    build-ios/install/lib/lib${NAME}_arm64.a \
     build-ios-sim/install/lib/lib${NAME}.a \
     -o $IOSPKGNAME/Versions/A/${NAME}
 cp -r build-ios/install/include/* $IOSPKGNAME/Versions/A/Headers/

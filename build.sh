@@ -19,7 +19,8 @@ popd
 ##### ios armv7 arm64
 mkdir -p build-ios
 pushd build-ios
-cmake -DCMAKE_TOOLCHAIN_FILE=../iosxc.toolchain.cmake -DCMAKE_AR=`xcrun -sdk iphoneos -find ar` ..
+#cmake -DCMAKE_TOOLCHAIN_FILE=../iosxc.toolchain.cmake -DCMAKE_AR=`xcrun -sdk iphoneos -find ar` ..
+cmake -DCMAKE_TOOLCHAIN_FILE=../iOS.cmake .. -DIOS_PLATFORM=SIMULATOR
 make
 make install
 popd
@@ -27,7 +28,8 @@ popd
 ##### ios simulator i386 x86_64
 mkdir -p build-ios-sim
 pushd build-ios-sim
-cmake -DCMAKE_TOOLCHAIN_FILE=../iossimxc.toolchain.cmake -DCMAKE_AR=`xcrun -sdk iphonesimulator -find ar` ..
+#cmake -DCMAKE_TOOLCHAIN_FILE=../iossimxc.toolchain.cmake -DCMAKE_AR=`xcrun -sdk iphonesimulator -find ar` ..
+cmake -DCMAKE_TOOLCHAIN_FILE=../iOS.cmake -DIOS_PLATFORM=OS .. 
 make
 make install
 popd
